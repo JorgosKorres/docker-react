@@ -9,9 +9,9 @@ services:
 # Commands are executed before installation
 # -t: tag, -f: file
 before_install:
-  - docker build -t JorgosKorres/docker-react -f Dockerfile.dev .
+  - docker build -t jorgoskorres/docker-react -f Dockerfile.dev .
 
 # Tell Travis how to run tests
 # Scripts section contains all the commands to execute tests
 script:
-  - docker run JorgosKorres/docker-react npm run test -- --coverage
+  - docker run jorgoskorres/docker-react npm run test -- --coverage
