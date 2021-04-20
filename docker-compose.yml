@@ -1,0 +1,30 @@
+# Specify version
+version: '3'
+# Specify list of containers
+# In web specify image, ports (array), and volumes
+# Image is not just current working directory (build: .) because of other name
+# "Dockerfile.dev"
+services:
+  web:
+    build:
+      # Context: specify where all files and folders are pulled from.  Is current working dir
+      context: .
+      # Location of dockerfile
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - /app/node_modules
+      - .:/app
+  # New service to run tests.  Is copy of first service
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /app/node_modules
+      # Map current working directory to the app folder
+      - .:/app
+    # Override starting command
+    command: ["npm", "run", "test"]
+
