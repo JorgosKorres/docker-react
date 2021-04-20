@@ -1,17 +1,22 @@
-# Tell travis we need a copy of Docker running
-# We need super user permissions
 sudo: required
-# We need a copy of docker CLI preinstalled
 services:
   - docker
 
-# Build image using Dockerfile.dev
-# Commands are executed before installation
-# -t: tag, -f: file
 before_install:
   - docker build -t jorgoskorres/docker-react -f Dockerfile.dev .
 
-# Tell Travis how to run tests
-# Scripts section contains all the commands to execute tests
 script:
   - docker run jorgoskorres/docker-react npm run test -- --coverage
+
+deploy:
+  provider: elasticbeanstalk
+  region: "us-east-2"
+  app: "docker-react"
+  env: "Dockerreact-env"
+  bucket_name: "elasticbeanstalk-us-east-2-255589487070"
+  bucket_path: "docker-react"
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key:
+    secure: "$AWS_SECRET_KEY"
